@@ -26,6 +26,15 @@ router.get('/catalog', async (req, res) => {
     } catch (error) {
         res.redirect('/404');
     }
+});
+
+router.get('/:bookId/details', async (req, res) => {
+    try {
+        const book = await bookService.getOne(req.params.bookId).lean();
+        res.render('books/details', { book });
+    } catch (error) {
+        res.redirect('/404');
+    }
 })
 
 
