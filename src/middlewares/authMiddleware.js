@@ -1,6 +1,8 @@
 const jwt = require('../lib/jwt');
 const ENV = require('../utils/constants');
 
+const bookService = require('../services/bookService')
+
 exports.auth = async (req, res, next) => {
     const token = req.cookies['auth'];
 
@@ -31,9 +33,9 @@ exports.isAuth = (req, res, next) => {
 
 //CHANGE SERVICE, NAME AND ID
 exports.isOwner = async (req, res, next) => {
-    const CHANGE = await SERVICE.getOne(req.params.ID);
+    const book = await bookService.getOne(req.params.bookId);
 
-    if (CHANGE.owner == req.user?._id) {
+    if (book.owner == req.user?._id) {
         return next();
     }
 
