@@ -38,7 +38,16 @@ router.get('/:bookId/details', async (req, res) => {
     } catch (error) {
         res.redirect('/404');
     }
-})
+});
+
+router.get('/:bookId/read', async(req, res) => {
+    try {
+        await bookService.read(req.params.bookId, req.user._id);
+        res.redirect(`/books/${req.params.bookId}/details`);
+    } catch (error) {
+        res.redirect('/404');
+    }
+});
 
 
 module.exports = router;
