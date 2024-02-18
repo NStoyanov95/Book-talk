@@ -40,7 +40,7 @@ router.get('/:bookId/details', async (req, res) => {
     }
 });
 
-router.get('/:bookId/read', async(req, res) => {
+router.get('/:bookId/read', async (req, res) => {
     try {
         await bookService.read(req.params.bookId, req.user._id);
         res.redirect(`/books/${req.params.bookId}/details`);
@@ -49,7 +49,7 @@ router.get('/:bookId/read', async(req, res) => {
     }
 });
 
-router.get('/:bookId/delete', async (req,res)=>{
+router.get('/:bookId/delete', async (req, res) => {
     try {
         await bookService.delete(req.params.bookId);
         res.redirect('/books/catalog');
@@ -58,5 +58,13 @@ router.get('/:bookId/delete', async (req,res)=>{
     }
 });
 
+router.get('/:bookId/edit', async (req, res) => {
+    try {
+        const book = await bookService.getOne(req.params.bookId).lean();
+        res.render('books/edit', { book });
+    } catch (error) {
+
+    }
+});
 
 module.exports = router;
