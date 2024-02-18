@@ -67,4 +67,15 @@ router.get('/:bookId/edit', async (req, res) => {
     }
 });
 
+router.post('/:bookId/edit', async (req, res) => {
+    const book = req.body
+
+    try {
+        await bookService.edit(req.params.bookId, book);
+        res.redirect(`/books/${req.params.bookId}/details`);
+    } catch (error) {
+        res.render('books/edit', { error: getErrorMessage(error), book })
+    }
+})
+
 module.exports = router;
