@@ -11,3 +11,5 @@ exports.getAll = () => Book.find();
 exports.getOne = (bookId) => Book.findById(bookId);
 
 exports.read = (bookId, userId) => Book.findByIdAndUpdate(bookId, { $push: { wishingList: userId } });
+
+exports.getWishList = (userId) => Book.find({ wishingList: userId });

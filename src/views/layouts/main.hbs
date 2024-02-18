@@ -30,7 +30,7 @@
                     <a href="/books/catalog">Catalog</a>
                     {{#if isAuth}}
                     <!--Only for logged user-->
-                    <a href="/profile">Profile</a>
+                    <a href="/{{user._id}}/profile">Profile</a>
                     <a href="/books/create">Create Review</a>
                     <a href="/auth/logout">Logout</a>
                     {{else}}
