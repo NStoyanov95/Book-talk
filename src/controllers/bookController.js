@@ -13,7 +13,7 @@ router.post('/create', async (req, res) => {
     bookData.owner = req.user._id;
     try {
         await bookService.create(bookData);
-        res.redirect('books/catalog');
+        res.redirect('/books/catalog');
     } catch (error) {
         res.render('books/create', { error: getErrorMessage(error), ...bookData });
     }
@@ -44,6 +44,15 @@ router.get('/:bookId/read', async(req, res) => {
     try {
         await bookService.read(req.params.bookId, req.user._id);
         res.redirect(`/books/${req.params.bookId}/details`);
+    } catch (error) {
+        res.redirect('/404');
+    }
+});
+
+router.get('/:bookId/delete', async (req,res)=>{
+    try {
+        await bookService.delete(req.params.bookId);
+        res.redirect('/books/catalog');
     } catch (error) {
         res.redirect('/404');
     }
