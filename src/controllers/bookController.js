@@ -30,8 +30,11 @@ router.get('/catalog', async (req, res) => {
 
 router.get('/:bookId/details', async (req, res) => {
     try {
-        const book = await bookService.getOne(req.params.bookId).lean();
-        res.render('books/details', { book });
+        const book = await bookService.getOne(req.params.bookId).lean().populate('wishingList');
+        const isUser = req.user;
+        const isOwner = book.owner == req.user?._id;
+        const isInWishList = book.wishingList.some(x => x._id == req.user?._id);
+        res.render('books/details', { book, isUser, isOwner, isInWishList });
     } catch (error) {
         res.redirect('/404');
     }
