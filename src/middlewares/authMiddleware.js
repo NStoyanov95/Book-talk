@@ -49,3 +49,15 @@ exports.isGuest = (req, res, next) => {
 
     return next();
 };
+
+exports.isRed = async(req,res,next) =>{
+    const book = await bookService.getOne(req.params.bookId).populate('wishingList')
+
+   const isRed = book.wishingList.some(x=> x._id == req.user?._id);
+
+   if (isRed) {
+         return res.redirect('/404')
+   }
+
+   return next();
+}

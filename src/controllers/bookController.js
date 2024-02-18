@@ -4,13 +4,13 @@ const bookService = require('../services/bookService');
 
 const { getErrorMessage } = require('../utils/errorUtils');
 
-const { isAuth, isGuest, isOwner } = require('../middlewares/authMiddleware')
+const { isAuth, isGuest, isOwner, isRed } = require('../middlewares/authMiddleware')
 
-router.get('/create', isAuth,(req, res) => {
+router.get('/create', isAuth, (req, res) => {
     res.render('books/create');
 });
 
-router.post('/create',isAuth, async (req, res) => {
+router.post('/create', isAuth, async (req, res) => {
     const bookData = req.body;
     bookData.owner = req.user._id;
     try {
@@ -42,7 +42,7 @@ router.get('/:bookId/details', async (req, res) => {
     }
 });
 
-router.get('/:bookId/read',isAuth, async (req, res) => {
+router.get('/:bookId/read', isAuth,isRed, async (req, res) => {
     try {
         await bookService.read(req.params.bookId, req.user._id);
         res.redirect(`/books/${req.params.bookId}/details`);
@@ -51,7 +51,7 @@ router.get('/:bookId/read',isAuth, async (req, res) => {
     }
 });
 
-router.get('/:bookId/delete',isAuth, isOwner, async (req, res) => {
+router.get('/:bookId/delete', isAuth, isOwner, async (req, res) => {
     try {
         await bookService.delete(req.params.bookId);
         res.redirect('/books/catalog');
@@ -60,7 +60,7 @@ router.get('/:bookId/delete',isAuth, isOwner, async (req, res) => {
     }
 });
 
-router.get('/:bookId/edit',isAuth, isOwner, async (req, res) => {
+router.get('/:bookId/edit', isAuth, isOwner, async (req, res) => {
     try {
         const book = await bookService.getOne(req.params.bookId).lean();
         res.render('books/edit', { book });
@@ -69,7 +69,7 @@ router.get('/:bookId/edit',isAuth, isOwner, async (req, res) => {
     }
 });
 
-router.post('/:bookId/edit',isAuth,isOwner, async (req, res) => {
+router.post('/:bookId/edit', isAuth, isOwner, async (req, res) => {
     const book = req.body
 
     try {
@@ -78,6 +78,6 @@ router.post('/:bookId/edit',isAuth,isOwner, async (req, res) => {
     } catch (error) {
         res.render('books/edit', { error: getErrorMessage(error), book })
     }
-})
+});
 
 module.exports = router;
