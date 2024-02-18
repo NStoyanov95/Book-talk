@@ -7,6 +7,9 @@ const bookController = require('./controllers/bookController');
 router.use(homeController);
 router.use('/auth', authController);
 router.use('/books', bookController);
+router.get('*', (req,res)=>{
+    res.redirect('/404');
+})
 
 
 
