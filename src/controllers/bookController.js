@@ -17,6 +17,15 @@ router.post('/create', async (req, res) => {
     } catch (error) {
         res.render('books/create', { error: getErrorMessage(error), ...bookData });
     }
+});
+
+router.get('/catalog', async (req, res) => {
+    try {
+        const books = await bookService.getAll().lean();
+        res.render('books/catalog', { books });
+    } catch (error) {
+        res.redirect('/404');
+    }
 })
 
 
